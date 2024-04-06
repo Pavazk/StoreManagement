@@ -23,7 +23,7 @@ public class ArticleController {
     public Article getArticleById(@PathVariable Long id){
         return articleServices.getArticleById(id);
     }
-    @PostMapping({"{id}"})
+    @PostMapping({"/{id}"})
     public Article updateArticle(@RequestBody Article article, @PathVariable Long id){
         return  articleServices.updateArticle(article, id);
     }

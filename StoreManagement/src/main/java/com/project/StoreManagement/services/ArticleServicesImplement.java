@@ -29,12 +29,17 @@ public class ArticleServicesImplement implements ArticleServices {
     }
 
     @Override
-    public Article updateArticle(Article article, Long id) {
-        Optional<Article> updateArticle = articleRepository.findById(id);
-        if (updateArticle.isEmpty()){
+    public Article updateArticle(Article updatedArticle, Long id) {
+        Optional<Article> optionalArticle = articleRepository.findById(id);
+
+        if (optionalArticle.isPresent()) {
+            Article existingArticle = optionalArticle.get();
+            existingArticle.setArticleDescription(updatedArticle.getArticleDescription());
+            existingArticle.setPrice(updatedArticle.getPrice());
+            return articleRepository.save(existingArticle);
+        } else {
             return null;
         }
-        return null;
     }
 
     @Override
