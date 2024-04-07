@@ -37,18 +37,32 @@ public class ArticleServicesImplement implements ArticleServices {
 
     /**
      * Metodo encargado de actualizar el articulo que corresponda con el id
-     * @param updatedArticle
+     * @param newArticle
      * @param id
-     * @return arrticulo actualizado o null en caso de no encontrar articulo con el id correspondiente
+     * @return articulo actualizado o null en caso de no encontrar articulo con el id correspondiente
      */
     @Override
-    public Article updateArticle(Article updatedArticle, Long id) {
+    public Article updateArticle(Article newArticle, Long id) {
         Optional<Article> optionalArticle = articleRepository.findById(id);
+
         if (optionalArticle.isPresent()) {
-            Article existingArticle = optionalArticle.get();
-            existingArticle.setArticleDescription(updatedArticle.getArticleDescription());
-            existingArticle.setPrice(updatedArticle.getPrice());
-            return articleRepository.save(existingArticle);
+            Article oldArticle = optionalArticle.get();
+            if (newArticle.getArticleDescription() != null) {
+                oldArticle.setArticleDescription(newArticle.getArticleDescription());
+            }
+            if (newArticle.getArticlePrice() != null) {
+                oldArticle.setArticlePrice(newArticle.getArticlePrice());
+            }
+            if (newArticle.getArticleStock() != null) {
+                oldArticle.setArticleStock(newArticle.getArticleStock());
+            }
+            if (newArticle.getArticleStatus() != null) {
+                oldArticle.setArticleStatus(newArticle.getArticleStatus());
+            }
+            if (newArticle.getCategory() != null) {
+                oldArticle.setCategory(newArticle.getCategory());
+            }
+            return articleRepository.save(oldArticle);
         } else {
             return null;
         }
