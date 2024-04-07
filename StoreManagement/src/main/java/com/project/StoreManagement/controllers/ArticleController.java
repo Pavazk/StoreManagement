@@ -15,21 +15,22 @@ public class ArticleController {
     private ArticleServices articleServices;
 
     @PostMapping
-    public Article createArticle(@RequestBody Article article){
+    public Article createArticle(@RequestBody Article article) {
         return articleServices.createArticle(article);
     }
 
     @PutMapping({"/{id}"})
-    public Article getArticleById(@PathVariable Long id){
+    public Article getArticleById(@PathVariable Long id) {
         return articleServices.getArticleById(id);
     }
+
     @PostMapping({"/{id}"})
-    public Article updateArticle(@RequestBody Article article, @PathVariable Long id){
-        return  articleServices.updateArticle(article, id);
+    public Article updateArticle(@RequestBody Article article, @PathVariable Long id) {
+        return articleServices.updateArticle(article, id);
     }
 
     @GetMapping
-    public List<Article> updateArticle(){
+    public List<Article> getAllArticle() {
         return articleServices.getAllArticles();
     }
 

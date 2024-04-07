@@ -6,7 +6,10 @@ import java.util.List;
 
 public interface ArticleServices {
     Article createArticle(Article article);
+
     Article getArticleById(Long id);
+
     Article updateArticle(Article article, Long id);
+
     List<Article> getAllArticles();
 }
