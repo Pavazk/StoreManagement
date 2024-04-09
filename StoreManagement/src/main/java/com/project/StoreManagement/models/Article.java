@@ -1,9 +1,7 @@
 package com.project.StoreManagement.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.project.StoreManagement.models.enunm.Status;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,10 +11,13 @@ import lombok.NoArgsConstructor;
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String articleName;
-    String articleDescription;
-    String price;
-    String articleStock;
-    String status;
+    private Long id;
+    private String articleName;
+    private String articleDescription;
+    private String articlePrice;
+    private String articleStock;
+    private Status articleStatus;
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "id")
+    private Category category;
 }
