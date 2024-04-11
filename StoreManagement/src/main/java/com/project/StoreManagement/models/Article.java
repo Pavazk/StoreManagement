@@ -1,5 +1,6 @@
 package com.project.StoreManagement.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.project.StoreManagement.models.enunm.Status;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -19,5 +20,6 @@ public class Article {
     private Status articleStatus;
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
+    @JsonBackReference
     private Category category;
 }
