@@ -1,6 +1,8 @@
 package com.project.StoreManagement.controllers;
 
 import com.project.StoreManagement.models.Article;
+import com.project.StoreManagement.models.RequestMessage;
+import com.project.StoreManagement.models.ResponseMessage;
 import com.project.StoreManagement.services.ArticleServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +17,11 @@ public class ArticleController {
     private ArticleServices articleServices;
 
     @PostMapping
-    public Article createArticle(@RequestBody Article article) {
-        return articleServices.createArticle(article);
+    public ResponseMessage createArticle(@RequestBody RequestMessage<Article> requestMessage) {
+        return articleServices.createArticle(requestMessage);
     }
 
-    @PutMapping({"/{id}"})
+/*    @PutMapping({"/{id}"})
     public Article getArticleById(@PathVariable Long id) {
         return articleServices.getArticleById(id);
     }
@@ -32,6 +34,6 @@ public class ArticleController {
     @GetMapping
     public List<Article> getAllArticle() {
         return articleServices.getAllArticles();
-    }
+    }*/
 
 }
