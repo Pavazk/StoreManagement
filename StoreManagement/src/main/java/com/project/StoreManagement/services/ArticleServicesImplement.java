@@ -1,6 +1,7 @@
 package com.project.StoreManagement.services;
 
 
+import com.project.StoreManagement.exceptions.AlreadyExistsException;
 import com.project.StoreManagement.models.Article;
 import com.project.StoreManagement.models.RequestMessage;
 import com.project.StoreManagement.models.ResponseMessage;
@@ -9,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class ArticleServicesImplement implements ArticleServices {
@@ -26,7 +27,7 @@ public class ArticleServicesImplement implements ArticleServices {
     @Override
     public ResponseMessage createArticle(RequestMessage<Article> requestMessage) {
         articleRepository.save((Article)requestMessage.getObject());
-        return setResponse("Creado correctamente", HttpStatus.OK);
+        return createResponse("Creado correctamente", HttpStatus.OK);
     }
 
     /**
@@ -85,17 +86,12 @@ public class ArticleServicesImplement implements ArticleServices {
         return (List<Article>) articleRepository.findAll();
     }*/
 
-    public String getDate() {
-        LocalDateTime fechaHoraActual = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.n");
-        return fechaHoraActual.format(formatter);
-    }
 
-    public ResponseMessage setResponse(String message, HttpStatus httpStatus){
-        ResponseMessage responseMessage = new ResponseMessage();
-        responseMessage.setDate(getDate());
-        responseMessage.setMessage(message);
-        responseMessage.setStatusCode(String.valueOf(httpStatus.value()));
-        return responseMessage;
+    public ResponseMessage createResponse(String message, HttpStatus httpStatus){
+        return ResponseMessage.builder()
+                .date(LocalDate.now())
+                .message(List.of(message))
+                .statusCode(httpStatus.value())
+                .build();
     }
 }

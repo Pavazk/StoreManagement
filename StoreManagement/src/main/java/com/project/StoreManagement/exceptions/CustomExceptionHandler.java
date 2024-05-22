@@ -1,5 +1,6 @@
 package com.project.StoreManagement.exceptions;
 
+import com.project.StoreManagement.models.ResponseMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -11,33 +12,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomExceptionHandler {
-    //todo: validar con los objetos
-/*    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Response> notFoundExceptionHandler(NotFoundException notFoundException){
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ResponseMessage> notFoundExceptionHandler(NotFoundException notFoundException) {
         return new ResponseEntity<>(
-                Response.builder()
+                ResponseMessage.builder()
                         .date(LocalDate.now())
                         .message(List.of(notFoundException.getMessage()))
-                        .statusCode(HttpStatus.NOT_FOUND.name())
+                        .statusCode(HttpStatus.NOT_FOUND.value())
                         .build(),
                 HttpStatus.NOT_FOUND
         );
     }
 
     @ExceptionHandler(AlreadyExistsException.class)
-    public ResponseEntity<Response> alreadyExistExceptionHandler(AlreadyExistsException alreadyExistsException){
+    public ResponseEntity<ResponseMessage> alreadyExistExceptionHandler(AlreadyExistsException alreadyExistsException) {
         return new ResponseEntity<>(
-                Response.builder()
+                ResponseMessage.builder()
                         .date(LocalDate.now())
                         .message(List.of(alreadyExistsException.getMessage()))
-                        .statusCode(HttpStatus.CONFLICT.name())
+                        .statusCode(HttpStatus.CONFLICT.value())
                         .build(),
                 HttpStatus.CONFLICT
         );
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Response> jakartaExceptionHandler(MethodArgumentNotValidException exception) {
+    public ResponseEntity<ResponseMessage> jakartaExceptionHandler(MethodArgumentNotValidException exception) {
         List<String> errorList = new ArrayList<>();
         exception.getBindingResult().getAllErrors().forEach(objectError ->
                 errorList.add(
@@ -45,12 +46,12 @@ public class CustomExceptionHandler {
                 )
         );
         return new ResponseEntity<>(
-                Response.builder()
+                ResponseMessage.builder()
                         .date(LocalDate.now())
                         .message(errorList)
-                        .statusCode(HttpStatus.BAD_REQUEST.name())
+                        .statusCode(HttpStatus.BAD_REQUEST.value())
                         .build(),
                 HttpStatus.BAD_REQUEST
         );
-    }*/
+    }
 }
