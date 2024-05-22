@@ -25,12 +25,8 @@ public class ArticleServicesImplement implements ArticleServices {
      */
     @Override
     public ResponseMessage createArticle(RequestMessage<Article> requestMessage) {
-        ResponseMessage responseMessage = new ResponseMessage();
         articleRepository.save((Article)requestMessage.getObject());
-        responseMessage.setDate(getDate());
-        responseMessage.setMessage("Creado exitosamente");
-        responseMessage.setStatusCode(String.valueOf(HttpStatus.OK.value()));
-        return responseMessage;
+        return setResponse("Creado correctamente", HttpStatus.OK);
     }
 
     /**
@@ -38,11 +34,14 @@ public class ArticleServicesImplement implements ArticleServices {
      * @param id
      * @return articulo con el id correspondiente o null en caso de no encontrar ninguno
      */
-    //@Override
-/*    public Article getArticleById(Long id) {
-        Optional<Article> article*//*ById = articleRepository.findById(id);
-        return articleById.orElse(null);*//*
-    }
+
+/*    @Override
+    public Article getArticleById(Long id) {
+        Optional<Article> articleById = articleRepository.findById(id);
+        return articleById.orElse(null);
+    }*/
+
+    /**
 
     *//**
      * Metodo encargado de actualizar el articulo que corresponda con el id
@@ -90,5 +89,13 @@ public class ArticleServicesImplement implements ArticleServices {
         LocalDateTime fechaHoraActual = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.n");
         return fechaHoraActual.format(formatter);
+    }
+
+    public ResponseMessage setResponse(String message, HttpStatus httpStatus){
+        ResponseMessage responseMessage = new ResponseMessage();
+        responseMessage.setDate(getDate());
+        responseMessage.setMessage(message);
+        responseMessage.setStatusCode(String.valueOf(httpStatus.value()));
+        return responseMessage;
     }
 }

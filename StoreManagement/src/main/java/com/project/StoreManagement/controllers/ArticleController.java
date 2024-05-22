@@ -21,10 +21,12 @@ public class ArticleController {
         return articleServices.createArticle(requestMessage);
     }
 
-/*    @PutMapping({"/{id}"})
-    public Article getArticleById(@PathVariable Long id) {
+/*   @PutMapping({"/{id}"})
+    public Article getArticleById(@PathVariable ResponseMessage<Long> responseMessage) {
         return articleServices.getArticleById(id);
-    }
+    }*/
+
+    /*
 
     @PostMapping({"/{id}"})
     public Article updateArticle(@RequestBody Article article, @PathVariable Long id) {
