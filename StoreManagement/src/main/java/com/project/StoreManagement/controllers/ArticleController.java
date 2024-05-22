@@ -18,13 +18,14 @@ public class ArticleController {
 
     @PostMapping
     public ResponseMessage createArticle(@RequestBody RequestMessage<Article> requestMessage) {
+        System.out.println("paso por aca3");
         return articleServices.createArticle(requestMessage);
     }
 
-/*   @PutMapping({"/{id}"})
-    public Article getArticleById(@PathVariable ResponseMessage<Long> responseMessage) {
+   @PutMapping({"/{id}"})
+    public ResponseMessage getArticleById(@PathVariable Long id) {
         return articleServices.getArticleById(id);
-    }*/
+    }
 
     /*
 

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Service
 public class ArticleServicesImplement implements ArticleServices {
@@ -31,19 +32,24 @@ public class ArticleServicesImplement implements ArticleServices {
 
     /**
      * Metodo encargado de buscar el articulo por su id
+     *
      * @param id
      * @return articulo con el id correspondiente o null en caso de no encontrar ninguno
      */
-
-/*    @Override
-    public Article getArticleById(Long id) {
+    @Override
+    public ResponseMessage getArticleById(Long id) {
+        System.out.println("paso por aca");
         Optional<Article> articleById = articleRepository.findById(id);
-        return articleById.orElse(null);
-    }*/
+        if (articleById.isPresent()) {
+            return setResponse("Artículo encontrado: " + articleById.get().getArticleName(), HttpStatus.OK);
+        } else {
+            return setResponse("Artículo no encontrado", null);
+        }
+    }
 
     /**
 
-    *//**
+     *//**
      * Metodo encargado de actualizar el articulo que corresponda con el id
      * @param newArticle
      * @param id
@@ -76,22 +82,24 @@ public class ArticleServicesImplement implements ArticleServices {
         }
     }
 
-    *//**
+    */
+
+    /**
      * Metodo encargado de retornar todos los articulos
+     *
      * @return lista de articulos almacenados en la base de datos
      *//*
     @Override
     public List<Article> getAllArticles() {
         return (List<Article>) articleRepository.findAll();
     }*/
-
     public String getDate() {
         LocalDateTime fechaHoraActual = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.n");
         return fechaHoraActual.format(formatter);
     }
 
-    public ResponseMessage setResponse(String message, HttpStatus httpStatus){
+    public ResponseMessage setResponse(String message, HttpStatus httpStatus) {
         ResponseMessage responseMessage = new ResponseMessage();
         responseMessage.setDate(getDate());
         responseMessage.setMessage(message);

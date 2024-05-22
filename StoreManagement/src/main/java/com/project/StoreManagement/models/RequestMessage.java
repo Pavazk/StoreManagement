@@ -1,5 +1,6 @@
 package com.project.StoreManagement.models;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;

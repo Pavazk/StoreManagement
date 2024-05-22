@@ -7,7 +7,7 @@ import com.project.StoreManagement.models.ResponseMessage;
 public interface ArticleServices {
     ResponseMessage createArticle(RequestMessage<Article> requestMessage);
 
-    //ResponseMessage getArticleById(Long id);
+    ResponseMessage getArticleById(Long id);
     /*
 
     Article updateArticle(Article article, Long id);
