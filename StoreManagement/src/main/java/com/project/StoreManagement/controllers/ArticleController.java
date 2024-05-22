@@ -1,6 +1,8 @@
 package com.project.StoreManagement.controllers;
 
 import com.project.StoreManagement.models.Article;
+import com.project.StoreManagement.models.RequestMessage;
+import com.project.StoreManagement.models.ResponseMessage;
 import com.project.StoreManagement.services.ArticleServices;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,11 @@ public class ArticleController {
     private ArticleServices articleServices;
 
     @PostMapping
-    public Article createArticle(@RequestBody @Valid Article article) {
-        return articleServices.createArticle(article);
+    public ResponseMessage createArticle(@RequestBody @Valid RequestMessage<Article> requestMessage) {
+        return articleServices.createArticle(requestMessage);
     }
 
-    @PutMapping({"/{id}"})
+/*    @PutMapping({"/{id}"})
     public Article getArticleById(@PathVariable @Valid Long id) {
         return articleServices.getArticleById(id);
     }
@@ -33,6 +35,6 @@ public class ArticleController {
     @GetMapping
     public List<Article> getAllArticle() {
         return articleServices.getAllArticles();
-    }
+    }*/
 
 }
