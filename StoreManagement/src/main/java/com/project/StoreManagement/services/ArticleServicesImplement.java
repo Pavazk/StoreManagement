@@ -107,7 +107,7 @@ public class ArticleServicesImplement implements ArticleServices {
         return createResponse("Articulo con id: " + optionalArticle.get().getId() + " eliminado correctamente", HttpStatus.OK);
     }
 
-    public ResponseMessage createResponse(String message, HttpStatus httpStatus) {
+    public static ResponseMessage createResponse(String message, HttpStatus httpStatus) {
         return ResponseMessage.builder()
                 .date(LocalDate.now())
                 .message(List.of(message))

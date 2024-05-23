@@ -1,16 +1,21 @@
 package com.project.StoreManagement.services;
 
 import com.project.StoreManagement.models.Category;
+import com.project.StoreManagement.models.RequestMessage;
+import com.project.StoreManagement.models.ResponseMessage;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public interface CategoryServices {
 
-    Category createCategory(Category category);
+    ResponseMessage createCategory(RequestMessage<Category> category);
 
-    Category getCategoryById(Long id);
+    ResponseMessage getCategoryById(Long id);
 
-    Category updateCategory(Category category, Long id);
+    ResponseMessage updateCategory(RequestMessage<Category> newCategory, Long id);
 
     List<Category> getAllCategory();
+
+    ResponseMessage deleteCategory(Long id);
 }
