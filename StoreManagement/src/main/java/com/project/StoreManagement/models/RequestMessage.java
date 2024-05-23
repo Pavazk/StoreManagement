@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.util.Date;
 
+@Builder
 @Data
 public class RequestMessage<T> {
     Date message;

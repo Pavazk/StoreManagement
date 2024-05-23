@@ -1,6 +1,4 @@
 package com.project.StoreManagement.services;
-
-
 import com.project.StoreManagement.models.Article;
 import com.project.StoreManagement.models.RequestMessage;
 import com.project.StoreManagement.models.ResponseMessage;
@@ -8,11 +6,9 @@ import com.project.StoreManagement.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDate;
 
 @Service
 public class ArticleServicesImplement implements ArticleServices {
@@ -28,7 +24,7 @@ public class ArticleServicesImplement implements ArticleServices {
     @Override
     public ResponseMessage createArticle(RequestMessage<Article> requestMessage) {
         articleRepository.save((Article)requestMessage.getObject());
-        return setResponse("Creado correctamente", HttpStatus.OK);
+        return createResponse("Creado correctamente", HttpStatus.OK);
     }
 
     /**
@@ -42,9 +38,9 @@ public class ArticleServicesImplement implements ArticleServices {
         System.out.println("paso por aca");
         Optional<Article> articleById = articleRepository.findById(id);
         if (articleById.isPresent()) {
-            return setResponse("Artículo encontrado: " + articleById.get().getArticleName(), HttpStatus.OK);
+            return createResponse("Artículo encontrado: " + articleById.get().getArticleName(), HttpStatus.OK);
         } else {
-            return setResponse("Artículo no encontrado", HttpStatus.NOT_FOUND);
+            return createResponse("Artículo no encontrado", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -83,9 +79,9 @@ public class ArticleServicesImplement implements ArticleServices {
             System.out.println("aa" + oldArticle.getArticleName());
             System.out.println(oldArticle.getArticleDescription());
             articleRepository.save(oldArticle);
-            return setResponse("Articulo con id " + optionalArticle.get().getId() + " actualizado correctamente", HttpStatus.OK);
+            return createResponse("Articulo con id " + optionalArticle.get().getId() + " actualizado correctamente", HttpStatus.OK);
         } else {
-            return null;
+            return createResponse("Articulo con id no encontrado", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -107,23 +103,17 @@ public class ArticleServicesImplement implements ArticleServices {
 
         if (optionalArticle.isPresent()) {
             articleRepository.delete(optionalArticle.get());
-            return setResponse("Articulo con id: " + optionalArticle.get().getId() + " eliminado correctamente", HttpStatus.OK);
+            return createResponse("Articulo con id: " + optionalArticle.get().getId() + " eliminado correctamente", HttpStatus.OK);
         } else {
-            return setResponse("Articulo a eliminar no encontrado", HttpStatus.NOT_FOUND);
+            return createResponse("Articulo a eliminar no encontrado", HttpStatus.NOT_FOUND);
         }
     }
 
-    public String getDate() {
-        LocalDateTime fechaHoraActual = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.n");
-        return fechaHoraActual.format(formatter);
-    }
-
-    public ResponseMessage setResponse(String message, HttpStatus httpStatus) {
-        ResponseMessage responseMessage = new ResponseMessage();
-        responseMessage.setDate(getDate());
-        responseMessage.setMessage(message);
-        responseMessage.setStatusCode(String.valueOf(httpStatus.value()));
-        return responseMessage;
+    public ResponseMessage createResponse(String message, HttpStatus httpStatus){
+        return ResponseMessage.builder()
+                .date(LocalDate.now())
+                .message(List.of(message))
+                .statusCode(httpStatus.value())
+                .build();
     }
 }

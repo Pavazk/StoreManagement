@@ -4,6 +4,7 @@ import com.project.StoreManagement.models.Article;
 import com.project.StoreManagement.models.RequestMessage;
 import com.project.StoreManagement.models.ResponseMessage;
 import com.project.StoreManagement.services.ArticleServices;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class ArticleController {
     private ArticleServices articleServices;
 
     @PostMapping
-    public ResponseMessage createArticle(@RequestBody RequestMessage<Article> requestMessage) {
+    public ResponseMessage createArticle(@Valid @RequestBody RequestMessage<Article> requestMessage) {
         System.out.println("paso por aca3");
         return articleServices.createArticle(requestMessage);
     }
