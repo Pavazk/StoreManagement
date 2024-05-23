@@ -1,11 +1,9 @@
 package com.project.StoreManagement.models;
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.List;
 
 @NoArgsConstructor
@@ -22,4 +20,13 @@ public class Category {
     @OneToMany(mappedBy = "category")
     @JsonManagedReference
     private List<Article> listArticle;
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", categoryName='" + categoryName + '\'' +
+                ", categoryDescription='" + categoryDescription + '\'' +
+                '}';
+    }
 }

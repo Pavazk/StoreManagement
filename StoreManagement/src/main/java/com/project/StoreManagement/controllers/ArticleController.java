@@ -18,25 +18,30 @@ public class ArticleController {
     private ArticleServices articleServices;
 
     @PostMapping
-    public ResponseMessage createArticle(@RequestBody @Valid RequestMessage<Article> requestMessage) {
+    public ResponseMessage createArticle(@Valid @RequestBody RequestMessage<Article> requestMessage) {
+        System.out.println("paso por aca3");
         return articleServices.createArticle(requestMessage);
     }
 
-/*   @PutMapping({"/{id}"})
-    public Article getArticleById(@PathVariable ResponseMessage<Long> responseMessage) {
+   @PutMapping({"/{id}"})
+    public ResponseMessage getArticleById(@PathVariable Long id) {
         return articleServices.getArticleById(id);
-    }*/
+    }
 
-    /*
 
     @PostMapping({"/{id}"})
-    public Article updateArticle(@RequestBody @Valid Article article, @PathVariable Long id) {
-        return articleServices.updateArticle(article, id);
+    public ResponseMessage updateArticle(@RequestBody RequestMessage<Article> articleRequestMessage, @PathVariable Long id) {
+        return articleServices.updateArticle(articleRequestMessage, id);
     }
 
     @GetMapping
     public List<Article> getAllArticle() {
         return articleServices.getAllArticles();
-    }*/
+    }
+
+    @DeleteMapping({"/{id}"})
+    public ResponseMessage deleteArticle(@PathVariable Long id) {
+        return articleServices.deleteArticle(id);
+    }
 
 }
