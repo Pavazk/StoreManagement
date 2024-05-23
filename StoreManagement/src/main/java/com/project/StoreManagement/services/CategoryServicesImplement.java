@@ -1,16 +1,18 @@
 package com.project.StoreManagement.services;
 
-import com.project.StoreManagement.models.Article;
+import com.project.StoreManagement.exceptions.AlreadyInUseException;
+import com.project.StoreManagement.exceptions.NotFoundException;
 import com.project.StoreManagement.models.Category;
 import com.project.StoreManagement.models.RequestMessage;
 import com.project.StoreManagement.models.ResponseMessage;
 import com.project.StoreManagement.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.project.StoreManagement.services.ArticleServicesImplement.createResponse;
 
 @Service
 public class CategoryServicesImplement implements CategoryServices {
@@ -30,7 +32,7 @@ public class CategoryServicesImplement implements CategoryServices {
     @Override
     public ResponseMessage createCategory(RequestMessage<Category> category) {
         categoryRepository.save(category.getObject());
-        return ArticleServicesImplement.createResponse("Categoria creada correctamente", HttpStatus.OK);
+        return createResponse("Categoria creada correctamente");
     }
 
     /**
@@ -41,11 +43,10 @@ public class CategoryServicesImplement implements CategoryServices {
     @Override
     public ResponseMessage getCategoryById(Long id) {
         Optional<Category> categoryById = categoryRepository.findById(id);
-        if (categoryById.isPresent()){
-            return ArticleServicesImplement.createResponse("Categoria " + categoryById.get().getCategoryName() + " se encontro correctamente", HttpStatus.OK);
-        } else {
-            return ArticleServicesImplement.createResponse("No existe categoria con ese id", HttpStatus.NOT_FOUND);
+        if (categoryById.isEmpty()) {
+            throw new NotFoundException("Categoria no encontrada");
         }
+        return createResponse("Categoria " + categoryById.get().getCategoryName() + " se encontro correctamente");
     }
 
     /**
@@ -57,19 +58,18 @@ public class CategoryServicesImplement implements CategoryServices {
     @Override
     public ResponseMessage updateCategory(RequestMessage<Category> newCategory, Long id) {
         Optional<Category> optionalCategory = categoryRepository.findById(id);
-        if (optionalCategory.isPresent()) {
-            Category oldCategory = optionalCategory.get();
-            if (newCategory.getObject().getCategoryName() != null) {
-                oldCategory.setCategoryName(newCategory.getObject().getCategoryName());
-            }
-            if (newCategory.getObject().getCategoryDescription() != null) {
-                oldCategory.setCategoryDescription(newCategory.getObject().getCategoryDescription());
-            }
-            categoryRepository.save(oldCategory);
-            return ArticleServicesImplement.createResponse("Articulo con id: " + optionalCategory.get().getId() + " correctamente actualizado", HttpStatus.OK);
-        } else {
-            return ArticleServicesImplement.createResponse("No se encontro el articulo a actualizar", HttpStatus.NOT_FOUND);
+        if (optionalCategory.isEmpty()) {
+            throw new NotFoundException("Categoria no encontrada");
         }
+        Category oldCategory = optionalCategory.get();
+        if (newCategory.getObject().getCategoryName() != null) {
+            oldCategory.setCategoryName(newCategory.getObject().getCategoryName());
+        }
+        if (newCategory.getObject().getCategoryDescription() != null) {
+            oldCategory.setCategoryDescription(newCategory.getObject().getCategoryDescription());
+        }
+        categoryRepository.save(oldCategory);
+        return createResponse("Categoria con id: " + optionalCategory.get().getId() + " correctamente actualizada");
     }
 
     /**
@@ -83,13 +83,13 @@ public class CategoryServicesImplement implements CategoryServices {
 
     @Override
     public ResponseMessage deleteCategory(Long id) {
-        Optional<Category> optionalArticle = categoryRepository.findById(id);
-
-        if (optionalArticle.isPresent() && optionalArticle.get().getListArticle().isEmpty()) {
-            categoryRepository.delete(optionalArticle.get());
-            return ArticleServicesImplement.createResponse("Articulo con id: " + optionalArticle.get().getId() + " eliminado correctamente", HttpStatus.OK);
-        } else {
-            return ArticleServicesImplement.createResponse("Articulo a eliminar no encontrado", HttpStatus.NOT_FOUND);
+        Optional<Category> optionalCategory = categoryRepository.findById(id);
+        if (optionalCategory.isEmpty()) {
+            throw new NotFoundException("Categoria no encontrada");
         }
+        if (!optionalCategory.get().getListArticle().isEmpty()) {
+            throw new AlreadyInUseException("Categoria en uso, no es posible eliminar");
+        }
+        return createResponse("Categoria con id: " + optionalCategory.get().getId() + " eliminado correctamente");
     }
 }

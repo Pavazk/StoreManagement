@@ -32,7 +32,7 @@ public class ArticleServicesImplement implements ArticleServices {
     @Override
     public ResponseMessage createArticle(RequestMessage<Article> requestMessage) {
         articleRepository.save(requestMessage.getObject());
-        return createResponse("Creado correctamente", HttpStatus.OK);
+        return createResponse("Creado correctamente");
     }
 
     /**
@@ -47,7 +47,7 @@ public class ArticleServicesImplement implements ArticleServices {
         if (articleById.isEmpty()) {
             throw new NotFoundException("Articulo no encontrado");
         }
-        return createResponse("Se encontro el articulo: " + articleById.get().getArticleName(), HttpStatus.OK);
+        return createResponse("Se encontro el articulo: " + articleById.get().getArticleName());
     }
 
     /**
@@ -83,7 +83,7 @@ public class ArticleServicesImplement implements ArticleServices {
             oldArticle.setCategory(newArticle.getObject().getCategory());
         }
         articleRepository.save(oldArticle);
-        return createResponse("Articulo con id " + optionalArticle.get().getId() + " actualizado correctamente", HttpStatus.OK);
+        return createResponse("Articulo con id " + optionalArticle.get().getId() + " actualizado correctamente");
     }
 
     /**
@@ -104,14 +104,14 @@ public class ArticleServicesImplement implements ArticleServices {
             throw new NotFoundException("Articulo no encontrado");
         }
         articleRepository.delete(optionalArticle.get());
-        return createResponse("Articulo con id: " + optionalArticle.get().getId() + " eliminado correctamente", HttpStatus.OK);
+        return createResponse("Articulo con id: " + optionalArticle.get().getId() + " eliminado correctamente");
     }
 
-    public static ResponseMessage createResponse(String message, HttpStatus httpStatus) {
+    public static ResponseMessage createResponse(String message) {
         return ResponseMessage.builder()
                 .date(LocalDate.now())
                 .message(List.of(message))
-                .statusCode(httpStatus.value())
+                .statusCode(HttpStatus.OK.value())
                 .build();
     }
 }
