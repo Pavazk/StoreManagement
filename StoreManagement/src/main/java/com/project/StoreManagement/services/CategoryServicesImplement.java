@@ -87,9 +87,10 @@ public class CategoryServicesImplement implements CategoryServices {
         if (optionalCategory.isEmpty()) {
             throw new NotFoundException("Categoria no encontrada");
         }
-        if (!optionalCategory.get().getListArticle().isEmpty()) {
+        if (optionalCategory.get().getListArticle() != null && !optionalCategory.get().getListArticle().isEmpty()) {
             throw new AlreadyInUseException("Categoria en uso, no es posible eliminar");
         }
+        categoryRepository.delete(optionalCategory.get());
         return createResponse("Categoria con id: " + optionalCategory.get().getId() + " eliminado correctamente");
     }
 }
