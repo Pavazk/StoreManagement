@@ -29,6 +29,17 @@ public class CustomExceptionHandler {
                 HttpStatus.NOT_FOUND
         );
     }
+    @ExceptionHandler(AlreadyInUseException.class)
+    public ResponseEntity<ResponseMessage> alreadyInUseExceptionHandler(AlreadyInUseException alreadyInUseException) {
+        return new ResponseEntity<>(
+                ResponseMessage.builder()
+                        .date(LocalDate.now())
+                        .message(List.of(alreadyInUseException.getMessage()))
+                        .statusCode(HttpStatus.CONFLICT.value())
+                        .build(),
+                HttpStatus.CONFLICT
+        );
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ResponseMessage> jakartaExceptionHandler(MethodArgumentNotValidException exception) {

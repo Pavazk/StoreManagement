@@ -15,8 +15,13 @@ import java.time.LocalDate;
 
 @Service
 public class ArticleServicesImplement implements ArticleServices {
+
     @Autowired
-    private ArticleRepository articleRepository;
+    public ArticleServicesImplement(ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
+    }
+
+    private final ArticleRepository articleRepository;
 
     /**
      * Metodo encargado de almacenar el articulo en la base de datos
@@ -26,7 +31,7 @@ public class ArticleServicesImplement implements ArticleServices {
      */
     @Override
     public ResponseMessage createArticle(RequestMessage<Article> requestMessage) {
-        articleRepository.save((Article) requestMessage.getObject());
+        articleRepository.save(requestMessage.getObject());
         return createResponse("Creado correctamente", HttpStatus.OK);
     }
 

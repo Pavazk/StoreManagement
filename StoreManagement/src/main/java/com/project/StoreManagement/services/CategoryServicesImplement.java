@@ -11,8 +11,12 @@ import java.util.Optional;
 @Service
 public class CategoryServicesImplement implements CategoryServices {
 
+    private final CategoryRepository categoryRepository;
+
     @Autowired
-    private CategoryRepository categoryRepository;
+    public CategoryServicesImplement(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
     /**
      * Metodo encargado de guardar en la base de datos la categoria

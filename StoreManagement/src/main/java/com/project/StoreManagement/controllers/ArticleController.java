@@ -14,8 +14,12 @@ import java.util.List;
 @RequestMapping("api/articles")
 public class ArticleController {
 
+    private final ArticleServices articleServices;
+
     @Autowired
-    private ArticleServices articleServices;
+    public ArticleController(ArticleServices articleServices) {
+        this.articleServices = articleServices;
+    }
 
     @PostMapping
     public ResponseMessage createArticle(@Valid @RequestBody RequestMessage<Article> requestMessage) {
