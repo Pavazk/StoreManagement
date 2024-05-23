@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -43,7 +44,7 @@ public class ArticleServicesImplement implements ArticleServices {
         if (articleById.isPresent()) {
             return setResponse("Artículo encontrado: " + articleById.get().getArticleName(), HttpStatus.OK);
         } else {
-            return setResponse("Artículo no encontrado", null);
+            return setResponse("Artículo no encontrado", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -54,45 +55,64 @@ public class ArticleServicesImplement implements ArticleServices {
      * @param newArticle
      * @param id
      * @return articulo actualizado o null en caso de no encontrar articulo con el id correspondiente
-     *//*
+     */
     @Override
-    public Article updateArticle(Article newArticle, Long id) {
+    public ResponseMessage updateArticle(RequestMessage<Article> newArticle, Long id) {
         Optional<Article> optionalArticle = articleRepository.findById(id);
 
         if (optionalArticle.isPresent()) {
             Article oldArticle = optionalArticle.get();
-            if (newArticle.getArticleDescription() != null) {
-                oldArticle.setArticleDescription(newArticle.getArticleDescription());
+            if (newArticle.getObject().getArticleName() != null) {
+                oldArticle.setArticleName(newArticle.getObject().getArticleName());
             }
-            if (newArticle.getArticlePrice() != null) {
-                oldArticle.setArticlePrice(newArticle.getArticlePrice());
+            if (newArticle.getObject().getArticleDescription() != null) {
+                oldArticle.setArticleDescription(newArticle.getObject().getArticleDescription());
             }
-            if (newArticle.getArticleStock() != null) {
-                oldArticle.setArticleStock(newArticle.getArticleStock());
+            if (newArticle.getObject().getArticlePrice() != null) {
+                oldArticle.setArticlePrice(newArticle.getObject().getArticlePrice());
             }
-            if (newArticle.getArticleStatus() != null) {
-                oldArticle.setArticleStatus(newArticle.getArticleStatus());
+            if (newArticle.getObject().getArticleStock() != null) {
+                oldArticle.setArticleStock(newArticle.getObject().getArticleStock());
             }
-            if (newArticle.getCategory() != null) {
-                oldArticle.setCategory(newArticle.getCategory());
+            if (newArticle.getObject().getArticleStatus() != null) {
+                oldArticle.setArticleStatus(newArticle.getObject().getArticleStatus());
             }
-            return articleRepository.save(oldArticle);
+            if (newArticle.getObject().getCategory() != null) {
+                oldArticle.setCategory(newArticle.getObject().getCategory());
+            }
+            System.out.println("aa" + oldArticle.getArticleName());
+            System.out.println(oldArticle.getArticleDescription());
+            articleRepository.save(oldArticle);
+            return setResponse("Articulo con id " + optionalArticle.get().getId() + " actualizado correctamente", HttpStatus.OK);
         } else {
             return null;
         }
     }
 
-    */
+    /*
 
     /**
      * Metodo encargado de retornar todos los articulos
      *
      * @return lista de articulos almacenados en la base de datos
-     *//*
+     */
     @Override
     public List<Article> getAllArticles() {
         return (List<Article>) articleRepository.findAll();
-    }*/
+    }
+
+    @Override
+    public ResponseMessage deleteArticle(Long id) {
+        Optional<Article> optionalArticle = articleRepository.findById(id);
+
+        if (optionalArticle.isPresent()) {
+            articleRepository.delete(optionalArticle.get());
+            return setResponse("Articulo con id: " + optionalArticle.get().getId() + " eliminado correctamente", HttpStatus.OK);
+        } else {
+            return setResponse("Articulo a eliminar no encontrado", HttpStatus.NOT_FOUND);
+        }
+    }
+
     public String getDate() {
         LocalDateTime fechaHoraActual = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.n");

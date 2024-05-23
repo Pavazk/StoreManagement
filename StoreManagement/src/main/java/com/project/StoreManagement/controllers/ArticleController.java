@@ -27,16 +27,20 @@ public class ArticleController {
         return articleServices.getArticleById(id);
     }
 
-    /*
 
     @PostMapping({"/{id}"})
-    public Article updateArticle(@RequestBody Article article, @PathVariable Long id) {
-        return articleServices.updateArticle(article, id);
+    public ResponseMessage updateArticle(@RequestBody RequestMessage<Article> articleRequestMessage, @PathVariable Long id) {
+        return articleServices.updateArticle(articleRequestMessage, id);
     }
 
     @GetMapping
     public List<Article> getAllArticle() {
         return articleServices.getAllArticles();
-    }*/
+    }
+
+    @DeleteMapping({"/{id}"})
+    public ResponseMessage deleteArticle(@PathVariable Long id) {
+        return articleServices.deleteArticle(id);
+    }
 
 }
