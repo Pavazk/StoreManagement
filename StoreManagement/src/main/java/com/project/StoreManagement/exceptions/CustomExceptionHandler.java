@@ -30,18 +30,6 @@ public class CustomExceptionHandler {
         );
     }
 
-    @ExceptionHandler(AlreadyExistsException.class)
-    public ResponseEntity<ResponseMessage> alreadyExistExceptionHandler(AlreadyExistsException alreadyExistsException) {
-        return new ResponseEntity<>(
-                ResponseMessage.builder()
-                        .date(LocalDate.now())
-                        .message(List.of(alreadyExistsException.getMessage()))
-                        .statusCode(HttpStatus.CONFLICT.value())
-                        .build(),
-                HttpStatus.CONFLICT
-        );
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ResponseMessage> jakartaExceptionHandler(MethodArgumentNotValidException exception) {
         List<String> errorList = new ArrayList<>();
