@@ -1,7 +1,10 @@
 package com.project.StoreManagement.controllers;
 
 import com.project.StoreManagement.models.Category;
+import com.project.StoreManagement.models.RequestMessage;
+import com.project.StoreManagement.models.ResponseMessage;
 import com.project.StoreManagement.services.CategoryServices;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,27 +14,36 @@ import java.util.List;
 @RequestMapping("api/category")
 public class CategoryController {
 
+    private final CategoryServices categoryServices;
+
     @Autowired
-    private CategoryServices categoryServices;
+    public CategoryController(CategoryServices categoryServices) {
+        this.categoryServices = categoryServices;
+    }
 
     @PostMapping
-    public Category createCategory(@RequestBody Category category) {
+    public ResponseMessage createCategory(@RequestBody @Valid RequestMessage<Category> category) {
         return categoryServices.createCategory(category);
     }
 
     @PutMapping({"/{id}"})
-    public Category getCategoryById(@PathVariable Long id) {
+    public ResponseMessage getCategoryById(@PathVariable @Valid Long id) {
         return categoryServices.getCategoryById(id);
     }
 
     @PostMapping({"/{id}"})
-    public Category updateCategory(@RequestBody Category article, @PathVariable Long id) {
-        return categoryServices.updateCategory(article, id);
+    public ResponseMessage updateCategory(@RequestBody @Valid RequestMessage<Category> category, @PathVariable Long id) {
+        return categoryServices.updateCategory(category, id);
     }
 
     @GetMapping
     public List<Category> updateCategory() {
         return categoryServices.getAllCategory();
+    }
+
+    @DeleteMapping({"/{id}"})
+    public ResponseMessage deleteArticle(@PathVariable Long id) {
+        return categoryServices.deleteCategory(id);
     }
 
 }

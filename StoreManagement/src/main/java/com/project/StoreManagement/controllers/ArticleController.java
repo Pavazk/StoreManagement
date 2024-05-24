@@ -1,7 +1,10 @@
 package com.project.StoreManagement.controllers;
 
 import com.project.StoreManagement.models.Article;
+import com.project.StoreManagement.models.RequestMessage;
+import com.project.StoreManagement.models.ResponseMessage;
 import com.project.StoreManagement.services.ArticleServices;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,27 +14,38 @@ import java.util.List;
 @RequestMapping("api/articles")
 public class ArticleController {
 
-    @Autowired
-    private ArticleServices articleServices;
+    private final ArticleServices articleServices;
 
-    @PostMapping
-    public Article createArticle(@RequestBody Article article) {
-        return articleServices.createArticle(article);
+    @Autowired
+    public ArticleController(ArticleServices articleServices) {
+        this.articleServices = articleServices;
     }
 
-    @PutMapping({"/{id}"})
-    public Article getArticleById(@PathVariable Long id) {
+    @PostMapping
+    public ResponseMessage createArticle(@Valid @RequestBody RequestMessage<Article> requestMessage) {
+        System.out.println("paso por aca3");
+        return articleServices.createArticle(requestMessage);
+    }
+
+   @PutMapping({"/{id}"})
+    public ResponseMessage getArticleById(@PathVariable Long id) {
         return articleServices.getArticleById(id);
     }
 
+
     @PostMapping({"/{id}"})
-    public Article updateArticle(@RequestBody Article article, @PathVariable Long id) {
-        return articleServices.updateArticle(article, id);
+    public ResponseMessage updateArticle(@RequestBody RequestMessage<Article> articleRequestMessage, @PathVariable Long id) {
+        return articleServices.updateArticle(articleRequestMessage, id);
     }
 
     @GetMapping
     public List<Article> getAllArticle() {
         return articleServices.getAllArticles();
+    }
+
+    @DeleteMapping({"/{id}"})
+    public ResponseMessage deleteArticle(@PathVariable Long id) {
+        return articleServices.deleteArticle(id);
     }
 
 }

@@ -1,15 +1,19 @@
 package com.project.StoreManagement.services;
 
 import com.project.StoreManagement.models.Article;
+import com.project.StoreManagement.models.RequestMessage;
+import com.project.StoreManagement.models.ResponseMessage;
 
 import java.util.List;
 
 public interface ArticleServices {
-    Article createArticle(Article article);
+    ResponseMessage createArticle(RequestMessage<Article> requestMessage);
 
-    Article getArticleById(Long id);
+    ResponseMessage getArticleById(Long id);
 
-    Article updateArticle(Article article, Long id);
+    ResponseMessage updateArticle(RequestMessage<Article>articleRequestMessage, Long id);
 
     List<Article> getAllArticles();
+
+    ResponseMessage deleteArticle(Long id);
 }
