@@ -1,10 +1,11 @@
-package com.project.StoreManagement.services;
+package com.project.StoreManagement.services.implementations;
 
 import com.project.StoreManagement.exceptions.NotFoundException;
 import com.project.StoreManagement.models.Article;
 import com.project.StoreManagement.models.RequestMessage;
 import com.project.StoreManagement.models.ResponseMessage;
 import com.project.StoreManagement.repository.ArticleRepository;
+import com.project.StoreManagement.services.interfaces.ArticleServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

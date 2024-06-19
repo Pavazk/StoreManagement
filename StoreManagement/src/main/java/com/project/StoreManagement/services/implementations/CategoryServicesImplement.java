@@ -1,4 +1,4 @@
-package com.project.StoreManagement.services;
+package com.project.StoreManagement.services.implementations;
 
 import com.project.StoreManagement.exceptions.AlreadyInUseException;
 import com.project.StoreManagement.exceptions.NotFoundException;
@@ -6,13 +6,14 @@ import com.project.StoreManagement.models.Category;
 import com.project.StoreManagement.models.RequestMessage;
 import com.project.StoreManagement.models.ResponseMessage;
 import com.project.StoreManagement.repository.CategoryRepository;
+import com.project.StoreManagement.services.interfaces.CategoryServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-import static com.project.StoreManagement.services.ArticleServicesImplement.createResponse;
+import static com.project.StoreManagement.services.implementations.ArticleServicesImplement.createResponse;
 
 @Service
 public class CategoryServicesImplement implements CategoryServices {

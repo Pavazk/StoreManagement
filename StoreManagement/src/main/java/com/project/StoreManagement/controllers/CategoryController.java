@@ -3,7 +3,7 @@ package com.project.StoreManagement.controllers;
 import com.project.StoreManagement.models.Category;
 import com.project.StoreManagement.models.RequestMessage;
 import com.project.StoreManagement.models.ResponseMessage;
-import com.project.StoreManagement.services.CategoryServices;
+import com.project.StoreManagement.services.interfaces.CategoryServices;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
