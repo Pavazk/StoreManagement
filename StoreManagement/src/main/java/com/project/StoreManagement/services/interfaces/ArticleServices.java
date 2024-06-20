@@ -1,4 +1,4 @@
-package com.project.StoreManagement.services;
+package com.project.StoreManagement.services.interfaces;
 
 import com.project.StoreManagement.models.Article;
 import com.project.StoreManagement.models.RequestMessage;

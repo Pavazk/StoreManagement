@@ -4,7 +4,7 @@ import com.project.StoreManagement.models.Article;
 import com.project.StoreManagement.models.RequestMessage;
 import com.project.StoreManagement.models.ResponseMessage;
 import com.project.StoreManagement.repository.ArticleRepository;
-import com.project.StoreManagement.services.ArticleServicesImplement;
+import com.project.StoreManagement.services.implementations.ArticleServicesImplement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

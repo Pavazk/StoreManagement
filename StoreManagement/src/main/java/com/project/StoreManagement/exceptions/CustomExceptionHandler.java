@@ -4,18 +4,23 @@ import com.project.StoreManagement.models.ResponseMessage;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.web.access.expression.DefaultHttpSecurityExpressionHandler;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.naming.InsufficientResourcesException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @ControllerAdvice
 @RestControllerAdvice
+
 public class CustomExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
@@ -73,6 +78,29 @@ public class CustomExceptionHandler {
                         .statusCode(HttpStatus.BAD_REQUEST.value())
                         .build(),
                 HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(AuthenticationFailedException.class)
+    public ResponseEntity<ResponseMessage> authFailed(AuthenticationFailedException exception) {
+        return new ResponseEntity<>(
+                ResponseMessage.builder()
+                        .date(LocalDate.now())
+                        .message(Collections.singletonList(exception.getMessage()))
+                        .statusCode(HttpStatus.FORBIDDEN.value())
+                        .build(),
+                HttpStatus.FORBIDDEN
+        );
+    }
+    @ExceptionHandler(InsufficientAuthenticationException.class)
+    public ResponseEntity<ResponseMessage> authFailed2(InsufficientAuthenticationException exception) {
+        return new ResponseEntity<>(
+                ResponseMessage.builder()
+                        .date(LocalDate.now())
+                        .message(Collections.singletonList(exception.getMessage()))
+                        .statusCode(HttpStatus.FORBIDDEN.value())
+                        .build(),
+                HttpStatus.FORBIDDEN
         );
     }
 }
