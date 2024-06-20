@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.project'
-version = '1.0.0_240411'
+version = '2.0.0_240620'
 
 java {
 	sourceCompatibility = '17'
