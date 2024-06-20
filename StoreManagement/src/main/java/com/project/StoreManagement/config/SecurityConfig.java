@@ -1,15 +1,12 @@
 package com.project.StoreManagement.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.StoreManagement.exceptions.AuthenticationFailedException;
 import com.project.StoreManagement.filters.JWTAuthenticationFilter;
 import com.project.StoreManagement.models.ResponseMessage;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,8 +21,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collections;
 
 @Configuration
@@ -34,11 +29,12 @@ public class SecurityConfig {
     private final JWTAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         System.out.println("Configuring SecurityFilterChain");
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> {
-                    //authorize.requestMatchers("api/v1/auth/**").permitAll(); todo: modificar las rutas de acceso
+                    authorize.requestMatchers("api/user/**").permitAll();
+                    authorize.requestMatchers("api/user").permitAll();
                     authorize.anyRequest().authenticated();
                 })
                 .exceptionHandling(httpSecurityExceptionHandlingConfigurer ->
@@ -50,7 +46,7 @@ public class SecurityConfig {
                                     response.getWriter().write(
                                             new ObjectMapper().writeValueAsString(
                                                     ResponseMessage.builder()
-                                                            .message(Collections.singletonList(authException.getMessage()))
+                                                            .message(Collections.singletonList("Se requiere una autenticacion valida para acceder a este endpoint"))
                                                             .statusCode(HttpStatus.FORBIDDEN.value())
                                                             .build()
                                             )
@@ -69,10 +65,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

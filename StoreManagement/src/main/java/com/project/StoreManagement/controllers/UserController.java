@@ -4,7 +4,6 @@ import com.project.StoreManagement.models.User;
 import com.project.StoreManagement.models.RequestMessage;
 import com.project.StoreManagement.models.ResponseMessage;
 import com.project.StoreManagement.models.UserLogin;
-import com.project.StoreManagement.services.CategoryServices;
 import com.project.StoreManagement.services.UserServices;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ public class UserController {
         return userServices.loginUser(userLogin);
     }
 
-    @PostMapping("create")
+    @PostMapping("/create")
     public ResponseMessage createUser(@RequestBody @Valid RequestMessage<User> user) {
         return userServices.createUser(user);
     }

@@ -20,8 +20,17 @@ import java.util.List;
 
 @ControllerAdvice
 @RestControllerAdvice
-
 public class CustomExceptionHandler {
+
+    @ExceptionHandler(Throwable.class)
+    public ResponseEntity<ResponseMessage> handleAllExceptions(Throwable ex) {
+        ResponseMessage responseMessage = ResponseMessage.builder()
+                .date(LocalDate.now())
+                .message(Collections.singletonList(ex.getMessage()))
+                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .build();
+        return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ResponseMessage> notFoundExceptionHandler(NotFoundException notFoundException) {
@@ -83,17 +92,6 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(AuthenticationFailedException.class)
     public ResponseEntity<ResponseMessage> authFailed(AuthenticationFailedException exception) {
-        return new ResponseEntity<>(
-                ResponseMessage.builder()
-                        .date(LocalDate.now())
-                        .message(Collections.singletonList(exception.getMessage()))
-                        .statusCode(HttpStatus.FORBIDDEN.value())
-                        .build(),
-                HttpStatus.FORBIDDEN
-        );
-    }
-    @ExceptionHandler(InsufficientAuthenticationException.class)
-    public ResponseEntity<ResponseMessage> authFailed2(InsufficientAuthenticationException exception) {
         return new ResponseEntity<>(
                 ResponseMessage.builder()
                         .date(LocalDate.now())

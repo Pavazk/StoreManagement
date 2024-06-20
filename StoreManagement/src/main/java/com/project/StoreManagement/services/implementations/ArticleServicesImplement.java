@@ -5,6 +5,7 @@ import com.project.StoreManagement.models.Article;
 import com.project.StoreManagement.models.RequestMessage;
 import com.project.StoreManagement.models.ResponseMessage;
 import com.project.StoreManagement.repository.ArticleRepository;
+import com.project.StoreManagement.repository.CategoryRepository;
 import com.project.StoreManagement.services.interfaces.ArticleServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,11 +19,13 @@ import java.time.LocalDate;
 public class ArticleServicesImplement implements ArticleServices {
 
     @Autowired
-    public ArticleServicesImplement(ArticleRepository articleRepository) {
+    public ArticleServicesImplement(ArticleRepository articleRepository, CategoryRepository categoryRepository) {
         this.articleRepository = articleRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     private final ArticleRepository articleRepository;
+    private final CategoryRepository categoryRepository;
 
     /**
      * Metodo encargado de almacenar el articulo en la base de datos
@@ -32,6 +35,9 @@ public class ArticleServicesImplement implements ArticleServices {
      */
     @Override
     public ResponseMessage createArticle(RequestMessage<Article> requestMessage) {
+        if(categoryRepository.findById(requestMessage.getObject().getCategory().getId()).isEmpty()){
+            throw new NotFoundException("Categoria no encontrada");
+        }
         articleRepository.save(requestMessage.getObject());
         return createResponse("Creado correctamente", HttpStatus.OK);
     }
