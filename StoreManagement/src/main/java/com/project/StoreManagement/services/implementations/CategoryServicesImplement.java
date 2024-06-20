@@ -1,4 +1,4 @@
-package com.project.StoreManagement.services;
+package com.project.StoreManagement.services.implementations;
 
 import com.project.StoreManagement.exceptions.AlreadyInUseException;
 import com.project.StoreManagement.exceptions.NotFoundException;
@@ -6,13 +6,15 @@ import com.project.StoreManagement.models.Category;
 import com.project.StoreManagement.models.RequestMessage;
 import com.project.StoreManagement.models.ResponseMessage;
 import com.project.StoreManagement.repository.CategoryRepository;
+import com.project.StoreManagement.services.interfaces.CategoryServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-import static com.project.StoreManagement.services.ArticleServicesImplement.createResponse;
+import static com.project.StoreManagement.services.implementations.ArticleServicesImplement.createResponse;
 
 @Service
 public class CategoryServicesImplement implements CategoryServices {
@@ -32,7 +34,7 @@ public class CategoryServicesImplement implements CategoryServices {
     @Override
     public ResponseMessage createCategory(RequestMessage<Category> category) {
         categoryRepository.save(category.getObject());
-        return createResponse("Categoria creada correctamente");
+        return createResponse("Categoria creada correctamente", HttpStatus.OK);
     }
 
     /**
@@ -46,7 +48,7 @@ public class CategoryServicesImplement implements CategoryServices {
         if (categoryById.isEmpty()) {
             throw new NotFoundException("Categoria no encontrada");
         }
-        return createResponse("Categoria " + categoryById.get().getCategoryName() + " se encontro correctamente");
+        return createResponse("Categoria " + categoryById.get().getCategoryName() + " se encontro correctamente", HttpStatus.OK);
     }
 
     /**
@@ -69,7 +71,7 @@ public class CategoryServicesImplement implements CategoryServices {
             oldCategory.setCategoryDescription(newCategory.getObject().getCategoryDescription());
         }
         categoryRepository.save(oldCategory);
-        return createResponse("Categoria con id: " + optionalCategory.get().getId() + " correctamente actualizada");
+        return createResponse("Categoria con id: " + optionalCategory.get().getId() + " correctamente actualizada", HttpStatus.OK);
     }
 
     /**
@@ -91,6 +93,6 @@ public class CategoryServicesImplement implements CategoryServices {
             throw new AlreadyInUseException("Categoria en uso, no es posible eliminar");
         }
         categoryRepository.delete(optionalCategory.get());
-        return createResponse("Categoria con id: " + optionalCategory.get().getId() + " eliminado correctamente");
+        return createResponse("Categoria con id: " + optionalCategory.get().getId() + " eliminado correctamente", HttpStatus.OK);
     }
 }

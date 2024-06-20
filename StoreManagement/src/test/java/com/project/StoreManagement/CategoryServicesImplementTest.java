@@ -7,7 +7,7 @@ import com.project.StoreManagement.models.Category;
 import com.project.StoreManagement.models.RequestMessage;
 import com.project.StoreManagement.models.ResponseMessage;
 import com.project.StoreManagement.repository.CategoryRepository;
-import com.project.StoreManagement.services.CategoryServicesImplement;
+import com.project.StoreManagement.services.implementations.CategoryServicesImplement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

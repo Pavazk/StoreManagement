@@ -1,10 +1,12 @@
-package com.project.StoreManagement.services;
+package com.project.StoreManagement.services.implementations;
 
 import com.project.StoreManagement.exceptions.NotFoundException;
 import com.project.StoreManagement.models.Article;
 import com.project.StoreManagement.models.RequestMessage;
 import com.project.StoreManagement.models.ResponseMessage;
 import com.project.StoreManagement.repository.ArticleRepository;
+import com.project.StoreManagement.repository.CategoryRepository;
+import com.project.StoreManagement.services.interfaces.ArticleServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,11 +19,13 @@ import java.time.LocalDate;
 public class ArticleServicesImplement implements ArticleServices {
 
     @Autowired
-    public ArticleServicesImplement(ArticleRepository articleRepository) {
+    public ArticleServicesImplement(ArticleRepository articleRepository, CategoryRepository categoryRepository) {
         this.articleRepository = articleRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     private final ArticleRepository articleRepository;
+    private final CategoryRepository categoryRepository;
 
     /**
      * Metodo encargado de almacenar el articulo en la base de datos
@@ -31,8 +35,11 @@ public class ArticleServicesImplement implements ArticleServices {
      */
     @Override
     public ResponseMessage createArticle(RequestMessage<Article> requestMessage) {
+        if(categoryRepository.findById(requestMessage.getObject().getCategory().getId()).isEmpty()){
+            throw new NotFoundException("Categoria no encontrada");
+        }
         articleRepository.save(requestMessage.getObject());
-        return createResponse("Creado correctamente");
+        return createResponse("Creado correctamente", HttpStatus.OK);
     }
 
     /**
@@ -47,7 +54,7 @@ public class ArticleServicesImplement implements ArticleServices {
         if (articleById.isEmpty()) {
             throw new NotFoundException("Articulo no encontrado");
         }
-        return createResponse("Se encontro el articulo: " + articleById.get().getArticleName());
+        return createResponse("Se encontro el articulo: " + articleById.get().getArticleName(), HttpStatus.OK);
     }
 
     /**
@@ -83,7 +90,7 @@ public class ArticleServicesImplement implements ArticleServices {
             oldArticle.setCategory(newArticle.getObject().getCategory());
         }
         articleRepository.save(oldArticle);
-        return createResponse("Articulo con id " + optionalArticle.get().getId() + " actualizado correctamente");
+        return createResponse("Articulo con id " + optionalArticle.get().getId() + " actualizado correctamente", HttpStatus.OK);
     }
 
     /**
@@ -104,14 +111,14 @@ public class ArticleServicesImplement implements ArticleServices {
             throw new NotFoundException("Articulo no encontrado");
         }
         articleRepository.delete(optionalArticle.get());
-        return createResponse("Articulo con id: " + optionalArticle.get().getId() + " eliminado correctamente");
+        return createResponse("Articulo con id: " + optionalArticle.get().getId() + " eliminado correctamente", HttpStatus.OK);
     }
 
-    public static ResponseMessage createResponse(String message) {
+    public static ResponseMessage createResponse(String message, HttpStatus httpStatus) {
         return ResponseMessage.builder()
                 .date(LocalDate.now())
                 .message(List.of(message))
-                .statusCode(HttpStatus.OK.value())
+                .statusCode(httpStatus.value())
                 .build();
     }
 }
